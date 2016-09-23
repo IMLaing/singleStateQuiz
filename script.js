@@ -46,41 +46,48 @@ var state = {
     questionIndex: 0 
 };
 
-//What can we DO to the state?
-//How should we render the Data to the DOM?
+var resetCurrentScore = function() {
+    state.score = 0;
+};
+var increaseQuestionIndex = function() {
+    state.questionIndex++;
+};
+var increaseStateScore = function() {
+    state.score++;
+};
 
-var setQuestion = function() { //takes state and questionIndex
+var setQuestion = function() { 
     console.log('question set');
     console.log(state.questionIndex);
-    var question = QUESTIONS[state.questionIndex]; //stores the questionIndex from QUESTIONS in question
-    $('.question-current').text(state.questionIndex); // renders the current question number
-    $('.question').text(question.text); // renders the question text
-    $('.answers').empty(); // clears answer element
-    for (var i=0; i<question.answers.length; i++) { // iteraties through answers for question
-        var answer = question.answers[i]; // stores the answers in answer
-        $('.answers').append('<li><button type="button">' + answer + '</button></li>'); //renders answer buttons
+    var question = QUESTIONS[state.questionIndex]; 
+    $('.question-current').text(state.questionIndex); 
+    $('.question').text(question.text); 
+    $('.answers').empty(); 
+    for (var i=0; i<question.answers.length; i++) { 
+        var answer = question.answers[i]; 
+        $('.answers').append('<li><button type="button">' + answer + '</button></li>'); 
     }
 };
-var resetScore = function() { //reset score
-    $('.score').text(0); //renders score element at 0
-};
-var showResults = function() { // shows answer page
-    $('.questions-page').hide(); // hides element
-    $('.results-page').show(); // renders element
-};
-var showQuestions = function() { // shows questions
-    $('.results-page').hide(); // hides element
-    $('.questions-page').show(); // renders element
-};
-var increaseScore = function() { // increases correct score
-    var score = state.score; // returns interger from string to score
-    $('.score').text(state.score + 1); // renders element
+
+var resetScore = function() { 
+    resetCurrentScore();
+    $('.score').text(0); 
 };
 
+var showResults = function() { 
+    $('.questions-page').hide(); 
+    $('.results-page').show(); 
+};
 
+var showQuestions = function() { 
+    $('.results-page').hide(); 
+    $('.questions-page').show(); 
+};
 
-//Event Listeners from the DOM
-
+var increaseScore = function() { 
+    var score = state.score; 
+    $('.score').text(state.score + 1); 
+};
 
 $(document).ready(function() {
 
@@ -100,11 +107,11 @@ $(document).ready(function() {
     var choice = $(this).parent().index();
     var question = QUESTIONS[state.questionIndex];
     if (question.correct === choice) {
-        state.score++;
+        increaseStateScore();
         increaseScore();
     }
     if (state.questionIndex + 1 < QUESTIONS.length) {
-        state.questionIndex++;
+        increaseQuestionIndex();
         setQuestion();
     }
     else {
